@@ -151,11 +151,13 @@ async function quizzesOR(nb) {
     );
     console.log("Your errors are")
     console.log(errors)
+    run();
 }
 
 async function quizzes3Bet(nb) {
     let stats = [];
     let errors = [];
+
     for (let i = 0; i < nb; i++) {
         console.log("Question #", i, "out of", nb)
         let result = await quizz3Bet();
@@ -168,10 +170,8 @@ async function quizzes3Bet(nb) {
     );
     console.log("Your errors are")
     console.log(errors)
+    run();
 }
-
-// quizzesOR(5);
-// quizzes3Bet(5);
 
 function getProbabilities(nb) {
     let init = new Date()
@@ -211,23 +211,42 @@ function getProbabilities(nb) {
 /**
  * Main
  */
-let question = {
-    type: "list",
-    name: "type",
-    message: "What do you want to learn ?",
-    choices: ["open raise", "3bet", "other"]
-};
 
-inquirer.prompt([question])
-    .then(answer => {
-        switch (answer.type) {
-            case "open raise":
-                quizzesOR(100);
-                break;
-            case "3bet":
-                quizzes3Bet(100);
-                break;
-            default:
-                console.log("Bye")
-        }
-    })
+async function run() {
+
+    let question = {
+        type: "list",
+        name: "type",
+        message: "What do you want to learn ?",
+        choices: ["open raise", "3bet", "show ranges OR", "show ranges 3bet", "other"]
+    };
+
+    inquirer.prompt([question])
+        .then(answer => {
+            switch (answer.type) {
+                case "open raise":
+                    quizzesOR(100);
+                    break;
+                case "3bet":
+                    quizzes3Bet(100);
+                    break;
+                case "show ranges OR":
+                    for (let i = 0; i < POSITIONS.length; i++) {
+                        console.log(POSITIONS[i], orRanges(i))
+                    }
+
+                    break;
+                case "show ranges 3bet":
+                    for (let i = 0; i < POSITIONS.length; i++) {
+                        for (let j = 0;j<i;j++) {
+                            console.log(POSITIONS[i],"vs",POSITIONS[j], ranges3Bet(i,j))
+                        }
+                    }
+                    break;
+                default:
+                    console.log("Bye")
+            }
+        })
+}
+
+run();
