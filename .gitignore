@@ -32,3 +32,6 @@ npm-debug.log
 
 public/uploads
 .env
+*.db
+__pycache__/
+*.pyc
