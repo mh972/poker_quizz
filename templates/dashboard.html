@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — GTO Preflop Trainer</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="/" class="topbar-logo">GTO Trainer</a>
+    <a href="/quiz" class="btn btn-sm btn-primary">Continue Quiz</a>
+  </header>
+
+  <main class="dash-main">
+    <h2 class="dash-title">Your Progress</h2>
+
+    <!-- Overall stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">{{ stats.total }}</div>
+        <div class="stat-lbl">Hands played</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ stats.correct }}</div>
+        <div class="stat-lbl">Correct</div>
+      </div>
+      <div class="stat-card {% if stats.pct >= 75 %}good{% elif stats.pct >= 55 %}ok{% else %}bad{% endif %}">
+        <div class="stat-num">{{ stats.pct }}%</div>
+        <div class="stat-lbl">Accuracy</div>
+      </div>
+    </div>
+
+    {% if stats.by_scenario %}
+    <h3 class="section-title">By Scenario <span class="section-hint">(sorted by accuracy, worst first)</span></h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Hands</th>
+            <th>Correct</th>
+            <th>Accuracy</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in stats.by_scenario %}
+          {% set pct = (row.correct / row.total * 100) | round(1) %}
+          <tr>
+            <td class="scenario-cell">{{ row.scenario }}</td>
+            <td>{{ row.total }}</td>
+            <td>{{ row.correct }}</td>
+            <td>
+              <div class="pct-bar-wrap">
+                <div class="pct-bar {% if pct >= 75 %}good{% elif pct >= 55 %}ok{% else %}bad{% endif %}"
+                     style="width: {{ pct }}%"></div>
+                <span class="pct-label">{{ pct }}%</span>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-title">Recent hands</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Scenario</th><th>Hand</th><th>Your action</th><th>Correct</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for r in stats.recent %}
+          <tr>
+            <td class="scenario-cell">{{ r.scenario }}</td>
+            <td><strong>{{ r.hand }}</strong></td>
+            <td>{{ r.action }}</td>
+            <td>{{ r.correct }}</td>
+            <td>{% if r.is_right %}<span class="badge good">✓</span>{% else %}<span class="badge bad">✗</span>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <p class="empty-state">No hands played yet. <a href="/quiz">Start the quiz!</a></p>
+    {% endif %}
+  </main>
+</body>
+</html>

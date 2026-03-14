@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz — GTO Preflop Trainer</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="/" class="topbar-logo">GTO Trainer</a>
+    <div class="topbar-stats">
+      <span id="stat-streak">Streak: 0</span>
+      <span id="stat-session">Session: 0/0</span>
+      <a href="/dashboard" class="btn btn-sm btn-secondary">Dashboard</a>
+    </div>
+  </header>
+
+  <main class="quiz-main">
+    <!-- Scenario label -->
+    <div class="scenario-banner" id="scenario-label">Loading…</div>
+
+    <!-- Hand display -->
+    <div class="hand-display" id="hand-display">
+      <div class="card-wrap" id="card1"></div>
+      <div class="card-wrap" id="card2"></div>
+    </div>
+
+    <!-- Hand canonical (e.g. AKs) -->
+    <div class="hand-canonical" id="hand-canonical"></div>
+
+    <!-- Action buttons -->
+    <div class="action-row" id="action-row"></div>
+
+    <!-- Feedback -->
+    <div class="feedback-box hidden" id="feedback-box">
+      <div class="feedback-icon" id="feedback-icon"></div>
+      <div class="feedback-text" id="feedback-text"></div>
+      <div class="feedback-explanation" id="feedback-explanation"></div>
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next hand →</button>
+    </div>
+  </main>
+
+  <script src="/static/js/quiz.js"></script>
+</body>
+</html>
